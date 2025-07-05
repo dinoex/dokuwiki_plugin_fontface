@@ -144,8 +144,7 @@ class action_plugin_fontface extends DokuWiki_Action_Plugin {
         $fontSVG    = $fontFileName.'.svg';
 
         // check if at least ttf and woff files exist
-        if (!$this->_isFileOk($fontSysDir.$fontWOFF, $fontDir.$fontWOFF, 'fontFile') ||
-            !$this->_isFileOk($fontSysDir.$fontTTF,  $fontDir.$fontTTF,  'fontFile')) {
+        if (!$this->_isFileOk($fontSysDir.$fontTTF,  $fontDir.$fontTTF,  'fontFile')) {
             return false;
         }
 
@@ -161,7 +160,9 @@ class action_plugin_fontface extends DokuWiki_Action_Plugin {
         if (file_exists($fontSysDir.$fontWOFF2)) {
             $CSSembed   .= "       url('".$fontDir.$fontWOFF2."') format('woff2'),".NL;
         }
-        $CSSembed       .= "       url('".$fontDir.$fontWOFF."') format('woff'),".NL;
+        if (file_exists($fontSysDir.$fontWOFF)) {
+            $CSSembed   .= "       url('".$fontDir.$fontWOFF."') format('woff'),".NL;
+        }
         $CSSembed       .= "       url('".$fontDir.$fontTTF."') format('truetype')";
         if (file_exists($fontSysDir.$fontSVG)) {
             $CSSembed   .= ",".NL;
